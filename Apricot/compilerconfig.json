@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "wwwroot/Content/lib/bootstrap-5.2.0-beta1/scss/_variables.css",
+    "inputFile": "wwwroot/Content/lib/bootstrap-5.2.0-beta1/scss/_variables.scss"
+  },
+  {
+    "outputFile": "wwwroot/Content/lib/bootstrap-5.2.0-beta1/scss/bootstrap.css",
+    "inputFile": "wwwroot/Content/lib/bootstrap-5.2.0-beta1/scss/bootstrap.scss"
+  }
+]
