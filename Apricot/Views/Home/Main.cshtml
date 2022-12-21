@@ -45,24 +45,35 @@
         border-radius: 50px;
         background-color: #00B0F0;
     }
+
+    .logo {
+        cursor: pointer;
+        position: relative;
+        top: 0;
+        transition: top ease 0.2s;
+    }
+
+    .logo:hover {
+        top: -2px;
+    }
 </style>
 
 <div class="d-flex h-100" style="background-color:#1B1C1F">
     <div class="d-flex flex-column bg-dark text-light pt-3 justify-content-center" style="width: 4.5rem;">
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center logo" onclick="window.location.reload()">
             <img src="~/Content/round.svg" height="60" width="60" style="--color_fill: #000" />
         </div>
         <hr class="m-2" />
         @foreach(var user in (ICollection<Apricot.Database.User>)ViewBag.Contacts) {
                 
-                    Html.RenderPartial("~/Views/Home/_Partial/Contact.cshtml", user);
+            Html.RenderPartial("~/Views/Home/_Partial/Contact.cshtml", user);
                 
         }
         <div class="float-end mt-auto me-auto ms-auto d-flex align-items-center justify-content-center circle bg-secondary">?</div>
     </div>
 
-    <div class="row w-100-calc h-100 overflow-auto">
-        <div class="col-9 gutter-0">
+    <div class="row w-100-calc h-100 overflow-auto" id="main">
+        <div class="col-9 gutter-0" id="middle">
             <div class="text-light mt-4 ms-4"><h2>Overview</h2></div>
             <div class="row ms-4 mt-5 me-4">
                 <div class="col-4 text-light">
@@ -105,3 +116,4 @@
 
     
 </div>
+

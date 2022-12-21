@@ -51,12 +51,42 @@ namespace Apricot.Controllers
             }
             ViewBag.Contacts = contacts;
             ViewBag.Spaces = spaces;
+            ViewBag.ID = user.ID;
             return View(user);
         }
 
-        public IActionResult Chat(int chatId)
+        public IActionResult Chat(int userId, int recipientUserId)
         {
+            ICollection<Chat> myChats = db.Chats.Where(e => e.UserID == userId && e.UserID2 == recipientUserId).ToList();
+            ICollection<Chat> recipientChats = db.Chats.Where(e => e.UserID == recipientUserId && e.UserID2 == userId).ToList();
+            ICollection<Chat> allChats = myChats.Concat(recipientChats).OrderBy(e=>e.Created).ToList();
+            User user = db.Users.Where(e => e.ID == userId).FirstOrDefault();
+            User recipient = db.Users.Where(e => e.ID == recipientUserId).FirstOrDefault();
+
+            ViewBag.MyChats = myChats;
+            ViewBag.RecipientChats = recipientChats;
+            ViewBag.AllChats = allChats;
+
+            ViewBag.User = user;
+            ViewBag.Recipient = recipient;
+
             return View();
+        }
+
+        public IActionResult SendMessage(int userId, int recipientId, string text)
+        {
+            Chat chat = new Chat()
+            {
+                Created = DateTime.Now,
+                Text = text,
+                UserID = userId,
+                UserID2 = recipientId,
+
+            };
+            db.Chats.Add(chat);
+            db.SaveChanges();
+
+            return Json(new { sucess = true });
         }
 
         public IActionResult Space(int spaceId)

@@ -3,9 +3,29 @@
     string border = Model.Status == Apricot.Database.Status.Offline ? "border-secondary" : Model.Status == Apricot.Database.Status.Online ? "border-success" : Model.Status == Apricot.Database.Status.Away ? "border-warning" : "border-danger";
 }
 
-<div class="me-auto border border-4 @border mb-2 ms-auto d-flex align-items-center justify-content-center circle">
+<div class="me-auto border border-4 @border mb-2 ms-auto d-flex align-items-center justify-content-center circle" id="contact" onclick="showChat(@Model.ID)">
     @if(Model.Picture != null) {
         <img src="@Model.Picture" height="53" width="53" style="--color_fill: #000" />
     }
 </div>
 
+
+<style>
+    #contact {
+        cursor: pointer;
+        position: relative;
+        top: 0;
+        transition: top ease 0.2s;
+    }
+    #contact:hover {
+            top: -2px;
+    }
+</style>
+
+<script>
+    function showChat(recipientId) {
+        var url = '@Url.Action("Chat", "Home")';
+        $("#middle").html("");
+        $('#middle').load(url, { userId: @ViewBag.ID, recipientUserId: recipientId });
+    }
+</script>

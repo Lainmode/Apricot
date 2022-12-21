@@ -1,5 +1,95 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Apricot.Database;
 @{
+    Layout = "~/Views/Shared/_LayoutAlt.cshtml";
+    User user = ViewBag.User;
+    User recipient = ViewBag.Recipient;
+    string bg = recipient.Status == Apricot.Database.Status.Offline ? "bg-secondary" : recipient.Status == Apricot.Database.Status.Online ? "bg-success" : recipient.Status == Apricot.Database.Status.Away ? "bg-warning" : "bg-danger";
+
+    var myChats = ViewBag.MyChats;
+    var recipientChats = ViewBag.RecipientChats;
+    ICollection<Chat> chats = (ICollection<Chat>)ViewBag.AllChats;
 }
+
+<style>
+    .circle-verysmall {
+        height: 20px !important;
+        width: 20px !important;
+        -moz-border-radius: 20px;
+        -webkit-border-radius: 20px;
+        border-radius: 20px;
+    }
+
+       .circle {
+        height: 60px !important;
+        width: 60px !important;
+        -moz-border-radius: 60px;
+        -webkit-border-radius: 60px;
+        border-radius: 60px;
+    }
+</style>
+
+<div class="p-4 text-light overflow-auto" style="height:88%;">
+    <div class="d-flex align-items-center mb-4">
+        <h5 class="me-4 mb-0">@recipient.Nickname</h5>
+        <div class="circle-verysmall @bg"></div>
+    </div>
+    <hr class="text-light" />
+    <div class="chats">
+    @foreach(var chat in chats) 
+    {
+        <div class="d-flex align-items-center mb-3">
+        @if(chat.UserID == user.ID) 
+        {
+            <div class="circle bg-primary me-4 d-flex">
+            </div>
+            <h6 class="mb-0 bg-primary p-2 pe-3 ps-2 rounded">@chat.Text</h6>
+
+        }
+
+        else 
+        {
+            <div class="circle  me-4 d-flex">
+                    </div>
+                <h6 class="mb-0 bg-dark border-secondary border p-2 pe-3 ps-2 rounded">@chat.Text</h6>
+        }
+        </div>
+    }
+    </div>
+</div>
+<div class="d-flex justify-content-center text-center">
+    <div class="m-4 text-light" style="width:90%;">
+        <form onsubmit="addChat(); showChat(@recipient.ID); return false;">
+            <div class="d-flex">
+                <input class="form-control me-2 bg-dark text-light" id="message" placeholder="Type something..." />
+                <button class="btn btn-secondary text-light">Send</button>
+            </div>
+            
+        </form>
+    </div>
+
+</div>
+
+
+<script>
+    function addChat() {
+        var msg = $('#message').val();
+        if(msg == "") {
+            return false;
+        }
+        $('#message').val("");
+        $.post("SendMessage",
+            {
+                text: msg,
+                userId: @user.ID,
+                recipientId: @recipient.ID
+            },);
+            return false;
+    }
+
+    function showChat(recipientId) {
+        var url = '@Url.Action("Chat", "Home")';
+        $("#middle").html("");
+        $('#middle').load(url, { userId: @user.ID, recipientUserId: recipientId });
+    }
+</script>
+

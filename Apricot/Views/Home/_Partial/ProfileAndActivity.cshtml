@@ -1,0 +1,27 @@
+﻿<div class="row ms-4 mt-5 me-4">
+    <div class="text-light mt-4 ms-4"><h2>Overview</h2></div>
+    <div class="col-4 text-light">
+        <h6>Profile</h6>
+        <hr />
+        <div class="card card-body bg-dark border border-light">
+            <div class="me-4 ms-4 text-center">
+                <div class="me-auto ms-auto mb-4 d-flex align-items-center justify-content-center circle-big bg-primary"></div>
+                <h5>@Model.Nickname#@Model.Tag</h5>
+                <h6 class="mb-5" style="font-weight: normal">@Model.Email</h6>
+                <button class="btn btn-outline-primary mb-2 d-block w-100">Modify</button>
+                <a class="text-primary text-decoration-none" href="#">Reset Password</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-8 text-light">
+        <h6>Activity</h6>
+        <hr />
+        @foreach (var user in (ICollection<Apricot.Database.User>)ViewBag.Contacts)
+        {
+            Html.RenderPartial("~/Views/Home/_Partial/Activity.cshtml", user);
+
+        }
+
+    </div>
+
+</div>
