@@ -9,13 +9,11 @@
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
     <Content Remove="sassconfig.json" />
-    <Content Remove="Views\Shared\_LayoutAlt.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
     <None Include="sassconfig.json" />
-    <None Include="Views\Shared\_LayoutAlt.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

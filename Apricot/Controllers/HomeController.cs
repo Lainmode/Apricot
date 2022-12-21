@@ -1,5 +1,9 @@
-﻿using Apricot.Models;
+﻿using Apricot.Database;
+using Apricot.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 
 namespace Apricot.Controllers
@@ -7,7 +11,12 @@ namespace Apricot.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        ApricotContext db = new ApricotContext();
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            db.ChangeTracker.LazyLoadingEnabled = false;
+            base.OnActionExecuting(context);
+        }
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -33,7 +42,16 @@ namespace Apricot.Controllers
 
         public IActionResult Main()
         {
-            return View();
+            User user = db.Users.Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).First();
+            ICollection<User> contacts = db.Users.Where(e => e.Contacts.Where(e => e.UserID == user.ID).Count() > 0).ToList();
+            ICollection<Space> spaces = new List<Space>();
+            foreach (var item in user.SpaceUsers)
+            {
+                spaces.Add(item.Space);
+            }
+            ViewBag.Contacts = contacts;
+            ViewBag.Spaces = spaces;
+            return View(user);
         }
 
         public IActionResult Chat(int chatId)
@@ -60,7 +78,7 @@ namespace Apricot.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

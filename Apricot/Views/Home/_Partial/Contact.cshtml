@@ -1,0 +1,11 @@
+﻿@model Apricot.Database.User
+@{
+    string border = Model.Status == Apricot.Database.Status.Offline ? "border-secondary" : Model.Status == Apricot.Database.Status.Online ? "border-success" : Model.Status == Apricot.Database.Status.Away ? "border-warning" : "border-danger";
+}
+
+<div class="me-auto border border-4 @border mb-2 ms-auto d-flex align-items-center justify-content-center circle">
+    @if(Model.Picture != null) {
+        <img src="@Model.Picture" height="53" width="53" style="--color_fill: #000" />
+    }
+</div>
+

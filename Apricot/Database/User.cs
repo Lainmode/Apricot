@@ -10,12 +10,14 @@ namespace Apricot.Database
         public string? Password { get; set; }
         public string? Email { get; set; }
         public string? Nickname { get; set; }
+        public string? Picture { get; set; }
         public int Tag { get; set; }
         public string? StatusMessage { get; set; }
         public bool InActivity { get; set; }
         public Status Status { get; set; }
         public Activity Activity { get; set; }
-        public ICollection<User> Friends { get; set; } = new List<User>();
+        public virtual ICollection<Contact>? Contacts { get; set; }
+        public virtual ICollection<SpaceUser>? SpaceUsers { get; set; }
     }
 
 

@@ -3,12 +3,6 @@
 }
 
 
-<style>
-    .fill {
-        height: 90%;
-    }
-</style>
-
 <div class="container fill d-flex justify-content-center">
     <div class="text-center align-items-center text-light mb-auto mt-auto ">
         <h1 class="text-primary">Welcome to Apricot</h1>
@@ -16,7 +10,10 @@
             <h2>The Producitve Social Hub</h2>
             <h4 class="mt-4">W/e W/e</h4>
             <h4 class="mt-4 mb-5">W/e W/e</h4>
-            <a class="btn btn-primary text-light w-75" style="font-size: 1.5rem;">Sign Up</a>
+            <a href="@Url.Action("SignUp")" class="btn btn-primary text-light w-75 mb-5" style="font-size: 1.5rem;">Sign Up</a>
+            <h6>Already have an account?</h6>
+            <a href="@Url.Action("Login")" class="btn btn-outline-primary w-75" style="font-size: 1.5rem;">Login</a>
+
         </div>
     </div>
 </div>

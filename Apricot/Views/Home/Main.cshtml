@@ -1,5 +1,107 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Apricot.Database.User;
 @{
+    Layout = "~/Views/Shared/_LayoutAlt.cshtml";
 }
+
+<style>
+    .circle {
+        height:60px !important;
+        width:60px !important;
+        min-height: 60px !important;
+        min-width: 60px !important;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        background-color: #00B0F0;
+    }
+
+    .circle-medium {
+        height: 80px !important;
+        width: 80px !important;
+        -moz-border-radius: 80px;
+        -webkit-border-radius: 80px;
+        border-radius: 80px;
+    }
+
+    .circle-big {
+        height:100px !important;
+        width: 100px !important;
+        -moz-border-radius: 100px;
+        -webkit-border-radius: 100px;
+        border-radius: 100px;
+    }
+
+    .w-100-calc {
+    width: -webkit-calc(100% - 3.8rem);
+        width: -moz-calc(100% - 3.8rem);
+        width: calc(100% - 3.8rem);
+    }
+
+    .circle-small {
+        height: 55px;
+        width: 55px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        background-color: #00B0F0;
+    }
+</style>
+
+<div class="d-flex h-100" style="background-color:#1B1C1F">
+    <div class="d-flex flex-column bg-dark text-light pt-3 justify-content-center" style="width: 4.5rem;">
+        <div class="d-flex justify-content-center">
+            <img src="~/Content/round.svg" height="60" width="60" style="--color_fill: #000" />
+        </div>
+        <hr class="m-2" />
+        @foreach(var user in (ICollection<Apricot.Database.User>)ViewBag.Contacts) {
+                
+                    Html.RenderPartial("~/Views/Home/_Partial/Contact.cshtml", user);
+                
+        }
+        <div class="float-end mt-auto me-auto ms-auto d-flex align-items-center justify-content-center circle bg-secondary">?</div>
+    </div>
+
+    <div class="row w-100-calc h-100 overflow-auto">
+        <div class="col-9 gutter-0">
+            <div class="text-light mt-4 ms-4"><h2>Overview</h2></div>
+            <div class="row ms-4 mt-5 me-4">
+                <div class="col-4 text-light">
+                    <h6>Profile</h6>
+                    <hr />
+                    <div class="card card-body bg-dark border border-light">
+                        <div class="me-4 ms-4 text-center">
+                            <div class="me-auto ms-auto mb-4 d-flex align-items-center justify-content-center circle-big bg-primary"></div>
+                            <h5 >@Model.Nickname#@Model.Tag</h5>
+                            <h6 class="mb-5" style="font-weight: normal">@Model.Email</h6>
+                            <button class="btn btn-outline-primary mb-2 d-block w-100">Modify</button>
+                            <a class="text-primary text-decoration-none" href="#">Reset Password</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8 text-light">                    
+                    <h6>Activity</h6>
+                    <hr />
+                    @foreach (var user in (ICollection<Apricot.Database.User>)ViewBag.Contacts) 
+                     {
+                        Html.RenderPartial("~/Views/Home/_Partial/Activity.cshtml", user);
+
+                     }
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-3 h-100 shadow" style="">
+            <div class="text-light mt-4 ms-4 text-center"><h3 class="text-primary">My Spaces</h3></div>
+            <hr class="text-light mb-4" />
+            @foreach(var space in (ICollection<Apricot.Database.Space>)ViewBag.Spaces)
+                {
+                Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
+
+                }
+        </div>
+    </div>
+
+    
+</div>
