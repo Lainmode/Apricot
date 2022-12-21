@@ -58,7 +58,7 @@
 </div>
 <div class="d-flex justify-content-center text-center">
     <div class="m-4 text-light" style="width:90%;">
-        <form onsubmit="addChat(); showChat(@recipient.ID); return false;">
+        <form onsubmit="addChat(); return false;">
             <div class="d-flex">
                 <input class="form-control me-2 bg-dark text-light" id="message" placeholder="Type something..." />
                 <button class="btn btn-secondary text-light">Send</button>
@@ -82,7 +82,7 @@
                 text: msg,
                 userId: @user.ID,
                 recipientId: @recipient.ID
-            },);
+                }, function () { showChat(@recipient.ID) });
             return false;
     }
 

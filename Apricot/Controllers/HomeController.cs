@@ -91,7 +91,21 @@ namespace Apricot.Controllers
 
         public IActionResult Space(int spaceId)
         {
-            return View();
+            User user = db.Users.Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).First();
+            Space space = db.Spaces.Where(e => e.ID == spaceId).FirstOrDefault();
+            ICollection<User> contacts = db.Users.Where(e => e.Contacts.Where(e => e.UserID == user.ID).Count() > 0).ToList();
+            ICollection<Space> spaces = new List<Space>();
+            foreach (var item in user.SpaceUsers)
+            {
+                spaces.Add(item.Space);
+            }
+            ViewBag.Contacts = contacts;
+            ViewBag.Spaces = spaces;
+            ViewBag.Space = space;
+            ViewBag.ID = user.ID;
+
+
+            return View(user);
         }
 
         public IActionResult Privacy()

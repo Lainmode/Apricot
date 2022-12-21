@@ -1,6 +1,134 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Apricot.Database.User
 @{
     Layout = "~/Views/Shared/_LayoutAlt.cshtml";
+    Apricot.Database.Space Space = ViewBag.Space;
 }
+<style>
+    .circle {
+        height: 60px !important;
+        width: 60px !important;
+        min-height: 60px !important;
+        min-width: 60px !important;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        background-color: #00B0F0;
+    }
+
+    .circle-medium {
+        height: 80px !important;
+        width: 80px !important;
+        -moz-border-radius: 80px;
+        -webkit-border-radius: 80px;
+        border-radius: 80px;
+    }
+
+    .circle-big {
+        height: 100px !important;
+        width: 100px !important;
+        -moz-border-radius: 100px;
+        -webkit-border-radius: 100px;
+        border-radius: 100px;
+    }
+
+    .w-100-calc {
+        width: -webkit-calc(100% - 3.8rem);
+        width: -moz-calc(100% - 3.8rem);
+        width: calc(100% - 3.8rem);
+    }
+
+    .circle-small {
+        height: 55px;
+        width: 55px;
+        -moz-border-radius: 50px;
+        -webkit-border-radius: 50px;
+        border-radius: 50px;
+        background-color: #00B0F0;
+    }
+
+    .logo {
+        cursor: pointer;
+        position: relative;
+        top: 0;
+        transition: top ease 0.2s;
+    }
+
+        .logo:hover {
+            top: -2px;
+        }
+</style>
+<div class="d-flex h-100" style="background-color:#1B1C1F">
+    <div class="d-flex flex-column bg-dark text-light pt-3 justify-content-center" style="width: 4.5rem;">
+        <div class="d-flex justify-content-center logo" onclick="window.location.href='@Url.Action("Main")'">
+            <img src="~/Content/round.svg" height="60" width="60" style="--color_fill: #000" />
+        </div>
+        <hr class="m-2" />
+        <div class="me-auto ms-auto d-flex align-items-center justify-content-center circle bg-secondary" style="cursor: pointer;" onclick="window.location.reload()">Live</div>
+
+        <hr class="m-2" />
+
+        @foreach (var user in (ICollection<Apricot.Database.User>)ViewBag.Contacts)
+        {
+
+            Html.RenderPartial("~/Views/Home/_Partial/Contact.cshtml", user);
+
+        }
+        <div class="float-end mt-auto me-auto ms-auto d-flex align-items-center justify-content-center circle bg-secondary">?</div>
+    </div>
+    <div class="row w-100-calc h-100 overflow-auto" id="main">
+        <div class="col-9 gutter-0" id="middle">
+            <div class="text-light mt-3 ms-4"><h6><span class="text-primary">Billy Butcher</span> doing whatever</h6></div>
+            <div class="row ms-2 " style="height: 95%">
+                <div class="col-12 text-light">
+                    <div class=" bg-black rounded-start w-100" style="height:92%;">
+                    <div class=" d-flex bg-dark align-items-center " style="min-height: 92%">
+                        <div class=" w-100 text-center bg-dark" style="height:85%">
+                            <h5 class="h-100">[Screenshare]</h5>
+                        </div>
+
+                    </div>
+                        <div class="d-flex m-2">
+                            <button class="btn btn-success me-2">Window</button>
+                            <button class="btn btn-danger me-2">Window</button>
+                            <button class="btn btn-warning me-2">Window</button>
+                            <button class="btn btn-info me-2">Window</button>
+
+
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mt-2">
+                        <button class="btn btn-light m-2">Mic</button>
+                        <button class="btn btn-light m-2">Deafen</button>
+                        <button class="btn btn-light m-2">Remote</button>
+                        <div class="border-end border-light" style="height:47px"></div>
+                        <div class="d-flex ms-2 me-1 align-items-center justify-content-center circle bg-primary"></div>
+                        <div class="d-flex ms-1 me-1 align-items-center justify-content-center circle bg-secondary"></div>
+                        <div class="d-flex  ms-1 me-1 align-items-center justify-content-center circle bg-secondary"></div>
+                        <button class="btn btn-secondary float-end ms-auto m-2">Cogwheel Settings</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-3 row h-100 shadow" style="">
+            <div class="col-10">
+                <div class="text-light mt-4  text-center"><h3 class="text-primary">@Space.Name</h3></div>
+                <hr class="text-light" />
+                <div class="text-center mt-auto text-light ">Under Construction</div>
+            </div>
+            <div class="col-2 border-secondary border-start">
+                <div class="text-light mt-4 ms-4 text-center"><h3 class="text-primary"></h3></div>
+                @foreach (var space in (ICollection<Apricot.Database.Space>)ViewBag.Spaces)
+                {
+                    Html.RenderPartial("~/Views/Home/_Partial/SpaceSm.cshtml", space);
+
+                }
+            </div>
+            
+        </div>
+    </div>
+    </div>
