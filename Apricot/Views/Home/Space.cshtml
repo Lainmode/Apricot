@@ -59,7 +59,7 @@
 </style>
 <div class="d-flex h-100" style="background-color:#1B1C1F">
     <div class="d-flex flex-column bg-dark text-light pt-3 justify-content-center" style="width: 4.5rem;">
-        <div class="d-flex justify-content-center logo" onclick="window.location.href='@Url.Action("Main")'">
+        <div class="d-flex justify-content-center logo" onclick="window.location.href='@Url.Action("Main", "Home", new {userId = Model.ID})'">
             <img src="~/Content/round.svg" height="60" width="60" style="--color_fill: #000" />
         </div>
         <hr class="m-2" />
