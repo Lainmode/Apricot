@@ -37,6 +37,7 @@ namespace Apricot.Controllers
             return View();
         }
 
+
         public IActionResult Login()
         {
             ViewBag.CurrentPage = CurrentPage.Login;
