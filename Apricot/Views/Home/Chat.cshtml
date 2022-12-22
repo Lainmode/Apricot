@@ -74,6 +74,24 @@
 <script>
     var lastChatId = @lastChatId;
    
+    $("#space").click(function () {
+        if (interval != null) {
+            clearInterval(interval);
+        }
+    });
+
+    $(".logo").click(function () {
+        if (interval != null) {
+            clearInterval(interval);
+        }
+    });
+
+    $("#contact").click(function () {
+        if (interval != null) {
+            clearInterval(interval);
+        }
+    });
+
     function addChat() {
         var msg = $('#message').val();
         if(msg == "") {
@@ -92,30 +110,20 @@
     }
 
     function showChat(recipientId) {
+                if (interval != null) {
+            clearInterval(interval);
+        }
         var url = '@Url.Action("Chat", "Home")';
         $("#middle").html("");
         $('#middle').load(url, { userId: @user.ID, recipientUserId: recipientId });
     }
+
     var interval = null;
 
-    $("#space").click(function() {
-        if(interval!=null) {
-            clearInterval(interval);
-        }
-    });
-
-    $(".logo").click(function () {
-        if(interval!=null) {
-            clearInterval(interval);
-        }    });
-
-    $("#contact").click(function () {
-        if (interval != null) {
-            clearInterval(interval);
-        }
-    });
+    var recipientId = @recipient.ID;
 
     $(document).ready(function () {
+        var rid = recipientId;
         var done = true;
         sleep(2000);
          interval = setInterval(function() {
@@ -132,6 +140,7 @@
                         done = true;
                     },
                     error: function() {
+                        keepRunning(rid, interval);
                         done = true;
                     }
                 });
@@ -143,6 +152,13 @@
     function handleNewMessages(result) {
         $(".chats").append(result.messages);
         lastChatId = result.lastChatId;
+    }
+
+    function keepRunning(recipient, interval) {
+        if(recipient != recipientId) {
+            console.log("true");
+            clearInterval(interval);
+        }
     }
 
     function sleep(ms) {
