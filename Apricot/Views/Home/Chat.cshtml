@@ -8,6 +8,7 @@
     var myChats = ViewBag.MyChats;
     var recipientChats = ViewBag.RecipientChats;
     ICollection<Chat> chats = (ICollection<Chat>)ViewBag.AllChats;
+    int lastChatId = chats.Count > 0 ? chats.Last().ChadID : 0;
 }
 
 <style>
@@ -71,6 +72,8 @@
 
 
 <script>
+    var lastChatId = @lastChatId;
+   
     function addChat() {
         var msg = $('#message').val();
         if(msg == "") {
@@ -82,7 +85,9 @@
                 text: msg,
                 userId: @user.ID,
                 recipientId: @recipient.ID
-                }, function () { showChat(@recipient.ID) });
+                }, function () { 
+                    //showChat(@recipient.ID) 
+                });
             return false;
     }
 
@@ -90,6 +95,58 @@
         var url = '@Url.Action("Chat", "Home")';
         $("#middle").html("");
         $('#middle').load(url, { userId: @user.ID, recipientUserId: recipientId });
+    }
+    var interval = null;
+
+    $("#space").click(function() {
+        if(interval!=null) {
+            clearInterval(interval);
+        }
+    });
+
+    $(".logo").click(function () {
+        if(interval!=null) {
+            clearInterval(interval);
+        }    });
+
+    $("#contact").click(function () {
+        if (interval != null) {
+            clearInterval(interval);
+        }
+    });
+
+    $(document).ready(function () {
+        var done = true;
+        sleep(2000);
+         interval = setInterval(function() {
+            if(done) {
+                done = false;
+                $.ajax({
+                    method: "post",
+                    url: "CheckNewMessages",
+                    data: { lastChatId: lastChatId, userId: @user.ID, recipientId: @recipient.ID },
+                    success: function (result) {
+                        if (result["newMsg"] == true) {
+                            handleNewMessages(result);
+                        }
+                        done = true;
+                    },
+                    error: function() {
+                        done = true;
+                    }
+                });
+            }
+
+        }, 2000);
+    });
+
+    function handleNewMessages(result) {
+        $(".chats").append(result.messages);
+        lastChatId = result.lastChatId;
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 </script>
 

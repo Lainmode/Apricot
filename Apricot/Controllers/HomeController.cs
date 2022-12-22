@@ -2,6 +2,9 @@
 using Apricot.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
@@ -42,7 +45,7 @@ namespace Apricot.Controllers
 
         public IActionResult Main(int userId)
         {
-            User user = db.Users.Where(e=>e.ID==userId).Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).First();
+            User user = db.Users.Where(e => e.ID == userId).Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).First();
             ICollection<User> contacts = db.Users.Where(e => e.Contacts.Where(e => e.UserID == user.ID).Count() > 0).ToList();
             ICollection<Space> spaces = new List<Space>();
             foreach (var item in user.SpaceUsers)
@@ -59,7 +62,11 @@ namespace Apricot.Controllers
         {
             ICollection<Chat> myChats = db.Chats.Where(e => e.UserID == userId && e.UserID2 == recipientUserId).ToList();
             ICollection<Chat> recipientChats = db.Chats.Where(e => e.UserID == recipientUserId && e.UserID2 == userId).ToList();
-            ICollection<Chat> allChats = myChats.Concat(recipientChats).OrderBy(e=>e.Created).ToList();
+            ICollection<Chat>? allChats = myChats.Concat(recipientChats).OrderBy(e => e.Created).ToList();
+            if(allChats == null)
+            {
+                allChats = new List<Chat>();
+            }
             User user = db.Users.Where(e => e.ID == userId).FirstOrDefault();
             User recipient = db.Users.Where(e => e.ID == recipientUserId).FirstOrDefault();
 
@@ -89,6 +96,45 @@ namespace Apricot.Controllers
             return Json(new { sucess = true });
         }
 
+        [HttpPost]
+        public IActionResult CheckNewMessages(int lastChatId, int userId, int recipientId)
+        {
+            var chat = db.Chats.Where(e => e.ChadID == lastChatId).FirstOrDefault();
+
+            var user = db.Users.Where(e => e.ID == userId).First();
+            var recipient = db.Users.Where(e => e.ID == recipientId).First();
+
+            if(chat == null)
+            {
+                chat = new Chat();
+                chat.Created = DateTime.Now.AddDays(-5);
+            }
+
+            chat.UserID = user.ID;
+            chat.UserID2 = recipient.ID;
+
+            ICollection<Chat> myChats = db.Chats.Where(e => e.UserID == chat.UserID && e.UserID2 == chat.UserID2 && e.Created > chat.Created).ToList();
+            ICollection<Chat> recipientChats = db.Chats.Where(e => e.UserID == chat.UserID2 && e.UserID2 == chat.UserID && e.Created > chat.Created).ToList();
+            ICollection<Chat> allChats = myChats.Concat(recipientChats).OrderBy(e => e.Created).ToList();
+
+            if (allChats.Count <= 0)
+            {
+                return Json(new { newMsg = false });
+            }
+
+
+
+            ChatToken chatToken = new ChatToken()
+            {
+                User = user,
+                Chats = allChats
+            };
+
+            var partialViewHtml = Common.RenderViewAsync<ChatToken>(this, "ChatBubble", chatToken, true).Result;
+
+            return Json(new { newMsg = true, messages = partialViewHtml, lastChatId = allChats.Last().ChadID }); ;
+        }
+
         public IActionResult Space(int spaceId)
         {
             User user = db.Users.Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).First();
@@ -108,6 +154,16 @@ namespace Apricot.Controllers
             return View(user);
         }
 
+        public IActionResult ChatBubble()
+        {
+
+            return View(db.Chats.ToList());
+        }
+
+        
+
+
+
         public IActionResult Privacy()
         {
             ViewBag.CurrentPage = CurrentPage.About;
@@ -124,5 +180,11 @@ namespace Apricot.Controllers
         {
             return View(new ErrorViewModel { RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+    }
+
+    public class ChatToken
+    {
+        public User User { get; set; }
+        public ICollection<Chat> Chats { get; set; }
     }
 }
