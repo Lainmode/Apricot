@@ -64,12 +64,16 @@
             <img src="~/Content/round.svg" height="60" width="60" style="--color_fill: #000" />
         </div>
         <hr class="m-2" />
-        @foreach(var user in (ICollection<Apricot.Database.User>)ViewBag.Contacts) {
-                
-            Html.RenderPartial("~/Views/Home/_Partial/Contact.cshtml", user);
+        @foreach(var channel in (ICollection<Apricot.Database.TextChannel>)ViewBag.Channels) {
+
+            Html.RenderPartial("~/Views/Home/_Partial/Contact.cshtml", channel);
                 
         }
+        <a class="float-end me-auto mt-2 mb-2 btn btn-success  text-light ms-auto d-flex align-items-center justify-content-center circle bg-success  text-decoration-none" style="font-size:14px;" href="@Url.Action("Index")" data-bs-toggle="modal" data-bs-target="#newFriendModal">+</a>
+
         <div class="float-end mt-auto me-auto ms-auto d-flex align-items-center justify-content-center circle bg-secondary">?</div>
+        <a class="float-end me-auto mt-2 btn btn-outline-danger  text-light ms-auto d-flex align-items-center justify-content-center circle bg-transparent text-decoration-none" style="font-size:14px;" href="@Url.Action("Index")">Logout</a>
+
     </div>
 
     <div class="row w-100 h-100 overflow-auto" id="main">
@@ -106,23 +110,17 @@
         <div class="col-3 h-100 shadow " style="">
             <div class="text-light mt-4 ms-4 text-center"><h3 class="text-primary">My Spaces</h3></div>
             <hr class="text-light mb-4" />
-            <div class=" overflow-auto " style="height: 88%">
+            <div class=" overflow-auto d-flex flex-column " style="height: 88%">
 
             @foreach(var space in (ICollection<Apricot.Database.Space>)ViewBag.Spaces)
                 {
                 Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
-                                Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
-                Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
-                Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
-                Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
-                Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
-                Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
-                Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
-                Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
-                Html.RenderPartial("~/Views/Home/_Partial/Space.cshtml", space);
+
 
 
                 }
+
+                <div class="mt-auto align-items-center d-flex justify-content-center"><button class="btn btn-outline-success d-block w-100 m-2" data-bs-toggle="modal" data-bs-target="#newRoomModal">+ New Room</button></div>
             </div>
 
         </div>
@@ -130,6 +128,61 @@
 
     
 </div>
+
+<div class="modal fade" id="newRoomModal" tabindex="-1" aria-labelledby="newRoomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-dark text-primary">
+            <div class="modal-header text-center border-bottom-0">
+                <h5 class="modal-title text-center" id="newRoomModalLabel">New Room</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body row">
+                <div class="col-4 h-50">
+                    <div class="card m-1 ">
+                        <div class="card-body bg-black rounded text-center  border-secondary">
+                            <h5>Create a new Space</h5>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-4 h-50">
+                    <div class="card m-1 ">
+                        <div class="card-body bg-black rounded text-center  border-secondary">
+                            <h5>Join A Random Space</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 h-50">
+                    <div class="card m-1 ">
+                        <div class="card-body bg-black rounded text-center  border-secondary">
+                            <h5>Join A Private Space</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="newFriendModal" tabindex="-1" aria-labelledby="newFriendModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content bg-dark text-primary">
+            <div class="modal-header text-center border-bottom-0">
+                <h5 class="modal-title text-center" id="newFriendModalLabel">New Friend</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="return false;">
+                    <input class="form-control bg-dark mb-3 text-light" placeholder="Enter name and tag [Example#1234]" />
+                    <button class="btn btn-primary w-100 d-block   text-light" data-bs-dismiss="modal">Send</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 <script>
 

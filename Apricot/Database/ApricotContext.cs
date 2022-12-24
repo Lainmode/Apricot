@@ -18,12 +18,12 @@ namespace Apricot.Database
 
 
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Space> Spaces { get; set; }
-        public DbSet<SpaceUser> SpaceUsers { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
-        public DbSet<Chat> Chats { get; set; }
-        public DbSet<TextChannel> TextChannels { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Space> Spaces { get; set; }
+        public virtual DbSet<SpaceUser> SpaceUsers { get; set; }
+        public virtual DbSet<Contact> Contacts { get; set; }
+        public virtual DbSet<Chat> Chats { get; set; }
+        public virtual DbSet<TextChannel> TextChannels { get; set; }
 
     }
 }

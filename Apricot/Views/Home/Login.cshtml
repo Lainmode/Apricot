@@ -6,10 +6,10 @@
     <div class="text-center align-items-center text-light mb-auto mt-auto w-50">
         <div class="card card-body border-primary border rounded bg-black">
             <h4 class="text-center text-primary mb-4">Login</h4>
-            <form method="post" action="@Url.Action("Login")">
+            <form method="post" action="@Url.Action("Main", "Home", new {userId = 1})">
                 <div class="me-4 ms-4">
-                <input class="form-control mb-4" type="text" placeholder="Username" />
-                <input class="form-control mb-5" type="password" placeholder="Password" />
+                <input class="form-control mb-4" type="text" placeholder="Username" value="homelander" />
+                <input class="form-control mb-5" type="password" placeholder="Password" value="123" />
                 </div>
                 <button class="btn btn-primary w-75 text-light" style="font-size: 1.5rem;">Login</button>
             </form>
