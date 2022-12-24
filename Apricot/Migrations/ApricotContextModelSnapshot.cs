@@ -24,11 +24,14 @@ namespace Apricot.Migrations
 
             modelBuilder.Entity("Apricot.Database.Chat", b =>
                 {
-                    b.Property<int>("ChadID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChadID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("ChannelID")
+                        .HasColumnType("int");
 
                     b.Property<string>("ChatHash")
                         .HasColumnType("nvarchar(max)");
@@ -42,10 +45,9 @@ namespace Apricot.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserID2")
-                        .HasColumnType("int");
+                    b.HasKey("ID");
 
-                    b.HasKey("ChadID");
+                    b.HasIndex("ChannelID");
 
                     b.ToTable("Chats");
                 });
@@ -85,7 +87,21 @@ namespace Apricot.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TextChannelID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("VideoStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VideoStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VideoUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("TextChannelID");
 
                     b.ToTable("Spaces");
                 });
@@ -97,6 +113,9 @@ namespace Apricot.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<bool>("InRoom")
+                        .HasColumnType("bit");
 
                     b.Property<int>("SpaceID")
                         .HasColumnType("int");
@@ -111,6 +130,25 @@ namespace Apricot.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("SpaceUsers");
+                });
+
+            modelBuilder.Entity("Apricot.Database.TextChannel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("ChannelType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GUID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("TextChannels");
                 });
 
             modelBuilder.Entity("Apricot.Database.User", b =>
@@ -139,9 +177,6 @@ namespace Apricot.Migrations
                     b.Property<string>("Picture")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SpaceID")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -156,9 +191,33 @@ namespace Apricot.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("SpaceID");
-
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TextChannelUser", b =>
+                {
+                    b.Property<int>("ChannelsID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ChannelsID", "UsersID");
+
+                    b.HasIndex("UsersID");
+
+                    b.ToTable("TextChannelUser");
+                });
+
+            modelBuilder.Entity("Apricot.Database.Chat", b =>
+                {
+                    b.HasOne("Apricot.Database.TextChannel", "Channel")
+                        .WithMany("Chats")
+                        .HasForeignKey("ChannelID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Channel");
                 });
 
             modelBuilder.Entity("Apricot.Database.Contact", b =>
@@ -172,10 +231,21 @@ namespace Apricot.Migrations
                     b.Navigation("User2");
                 });
 
+            modelBuilder.Entity("Apricot.Database.Space", b =>
+                {
+                    b.HasOne("Apricot.Database.TextChannel", "TextChannel")
+                        .WithMany()
+                        .HasForeignKey("TextChannelID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TextChannel");
+                });
+
             modelBuilder.Entity("Apricot.Database.SpaceUser", b =>
                 {
                     b.HasOne("Apricot.Database.Space", "Space")
-                        .WithMany()
+                        .WithMany("SpaceUsers")
                         .HasForeignKey("SpaceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -191,16 +261,29 @@ namespace Apricot.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Apricot.Database.User", b =>
+            modelBuilder.Entity("TextChannelUser", b =>
                 {
-                    b.HasOne("Apricot.Database.Space", null)
-                        .WithMany("Users")
-                        .HasForeignKey("SpaceID");
+                    b.HasOne("Apricot.Database.TextChannel", null)
+                        .WithMany()
+                        .HasForeignKey("ChannelsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Apricot.Database.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Apricot.Database.Space", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("SpaceUsers");
+                });
+
+            modelBuilder.Entity("Apricot.Database.TextChannel", b =>
+                {
+                    b.Navigation("Chats");
                 });
 
             modelBuilder.Entity("Apricot.Database.User", b =>

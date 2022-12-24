@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
+using System.Threading.Channels;
 
 namespace Apricot.Controllers
 {
@@ -59,64 +60,72 @@ namespace Apricot.Controllers
             return View(user);
         }
 
-        public IActionResult Chat(int userId, int recipientUserId)
+        public IActionResult Chat(int userId, int channelId)
         {
-            ICollection<Chat> myChats = db.Chats.Where(e => e.UserID == userId && e.UserID2 == recipientUserId).ToList();
-            ICollection<Chat> recipientChats = db.Chats.Where(e => e.UserID == recipientUserId && e.UserID2 == userId).ToList();
+            TextChannel channel = db.TextChannels.Where(e => e.ID == channelId).First();
+
+            ICollection<Chat> myChats = channel.Chats.Where(e => e.UserID == userId).ToList();
+            ICollection<Chat> recipientChats = channel.Chats.Where(e => e.UserID != userId).ToList();
             ICollection<Chat>? allChats = myChats.Concat(recipientChats).OrderBy(e => e.Created).ToList();
-            if(allChats == null)
+            if (allChats == null)
             {
                 allChats = new List<Chat>();
             }
             User user = db.Users.Where(e => e.ID == userId).FirstOrDefault();
-            User recipient = db.Users.Where(e => e.ID == recipientUserId).FirstOrDefault();
+            ICollection<User> recipients = channel.Users.Where(e => e.ID != userId).ToList();
 
             ViewBag.MyChats = myChats;
             ViewBag.RecipientChats = recipientChats;
             ViewBag.AllChats = allChats;
 
             ViewBag.User = user;
-            ViewBag.Recipient = recipient;
+            ViewBag.Recipient = recipients;
+            ViewBag.Channel = channel;
 
             return View();
         }
 
-        public IActionResult SendMessage(int userId, int recipientId, string text)
+        public IActionResult SendMessage(int userId, int channelId, string text)
         {
+            TextChannel channel = db.TextChannels.Where(e => e.ID == channelId).FirstOrDefault();
             Chat chat = new Chat()
             {
                 Created = DateTime.Now,
                 Text = text,
                 UserID = userId,
-                UserID2 = recipientId,
+                ChannelID = channel.ID,
 
             };
+
+            channel.Chats.Add(chat);
+
             db.Chats.Add(chat);
+            db.TextChannels.Update(channel);
             db.SaveChanges();
 
-            return Json(new { sucess = true });
+            return Json(new { success = true });
         }
 
         [HttpPost]
-        public IActionResult CheckNewMessages(int lastChatId, int userId, int recipientId)
+        public IActionResult CheckNewMessages(int lastChatId, int userId, int channelId)
         {
-            var chat = db.Chats.Where(e => e.ChadID == lastChatId).FirstOrDefault();
+            var chat = db.Chats.Where(e => e.ID == lastChatId).FirstOrDefault();
 
             var user = db.Users.Where(e => e.ID == userId).First();
-            var recipient = db.Users.Where(e => e.ID == recipientId).First();
 
-            if(chat == null)
+            if (chat == null)
             {
                 chat = new Chat();
                 chat.Created = DateTime.Now.AddDays(-5);
             }
 
             chat.UserID = user.ID;
-            chat.UserID2 = recipient.ID;
 
-            ICollection<Chat> myChats = db.Chats.Where(e => e.UserID == chat.UserID && e.UserID2 == chat.UserID2 && e.Created > chat.Created).ToList();
-            ICollection<Chat> recipientChats = db.Chats.Where(e => e.UserID == chat.UserID2 && e.UserID2 == chat.UserID && e.Created > chat.Created).ToList();
-            ICollection<Chat> allChats = myChats.Concat(recipientChats).OrderBy(e => e.Created).ToList();
+            TextChannel channel = db.TextChannels.Where(e => e.ID == channelId).First();
+
+            ICollection<Chat> myChats = channel.Chats.Where(e => e.UserID == userId).ToList();
+            ICollection<Chat> recipientChats = channel.Chats.Where(e => e.UserID != userId).ToList();
+            ICollection<Chat>? allChats = myChats.Concat(recipientChats).OrderBy(e => e.Created).ToList();
 
             if (allChats.Count <= 0)
             {
@@ -133,24 +142,24 @@ namespace Apricot.Controllers
 
             var partialViewHtml = Common.RenderViewAsync<ChatToken>(this, "ChatBubble", chatToken, true).Result;
 
-            return Json(new { newMsg = true, messages = partialViewHtml, lastChatId = allChats.Last().ChadID }); ;
+            return Json(new { newMsg = true, messages = partialViewHtml, lastChatId = allChats.Last().ID }); ;
         }
 
         public IActionResult Space(int spaceId)
         {
             User user = db.Users.Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).First();
             Space space = db.Spaces.Where(e => e.ID == spaceId).FirstOrDefault();
-            ICollection<User> contacts = db.Users.Where(e => e.Contacts.Where(e => e.UserID == user.ID).Count() > 0).ToList();
+
             ICollection<Space> spaces = new List<Space>();
             foreach (var item in user.SpaceUsers)
             {
                 spaces.Add(item.Space);
             }
-            ViewBag.Contacts = contacts;
+            ViewBag.Users = space.SpaceUsers;
             ViewBag.Spaces = spaces;
             ViewBag.Space = space;
             ViewBag.ID = user.ID;
-
+            ViewBag.Channel = space.TextChannel;
 
             return View(user);
         }
@@ -161,7 +170,7 @@ namespace Apricot.Controllers
             return View(db.Chats.ToList());
         }
 
-        
+
 
 
 

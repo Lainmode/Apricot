@@ -1,14 +1,16 @@
 ﻿@using Apricot.Database;
 @{
-    Layout = "~/Views/Shared/_LayoutAlt.cshtml";
+    Layout = null;
     User user = ViewBag.User;
-    User recipient = ViewBag.Recipient;
+    TextChannel channel = ViewBag.Channel;
+    var recipients = (ICollection<User>)ViewBag.Recipient;
+    User recipient = recipients.Where(e => e.ID != user.ID).First();
     string bg = recipient.Status == Apricot.Database.Status.Offline ? "bg-secondary" : recipient.Status == Apricot.Database.Status.Online ? "bg-success" : recipient.Status == Apricot.Database.Status.Away ? "bg-warning" : "bg-danger";
 
     var myChats = ViewBag.MyChats;
     var recipientChats = ViewBag.RecipientChats;
     ICollection<Chat> chats = (ICollection<Chat>)ViewBag.AllChats;
-    int lastChatId = chats.Count > 0 ? chats.Last().ChadID : 0;
+    int lastChatId = chats.Count > 0 ? chats.Last().ID : 0;
 }
 
 <style>
@@ -27,15 +29,17 @@
         -webkit-border-radius: 60px;
         border-radius: 60px;
     }
+
+
 </style>
 
-<div class="p-4 text-light overflow-auto scroller" style="height:88%;">
+<div class="p-4 text-light" id="chat" style="height:88%;">
     <div class="d-flex align-items-center  mb-4">
         <h5 class="me-4 mb-0">@recipient.Nickname</h5>
         <div class="circle-verysmall @bg"></div>
     </div>
     <hr class="text-light" />
-    <div class="chats">
+    <div class="chats overflow-auto scroller" style="height:95%">
     @foreach(var chat in chats) 
     {
         <div class="d-flex align-items-center mb-3">
@@ -123,6 +127,8 @@
     var recipientId = @recipient.ID;
 
     $(document).ready(function () {
+        var element = document.getElementById("chat");
+        $(".chats")[0].scrollTo(0, element.offsetHeight);
         var rid = recipientId;
         var done = true;
         sleep(2000);
@@ -132,7 +138,7 @@
                 $.ajax({
                     method: "post",
                     url: "CheckNewMessages",
-                    data: { lastChatId: lastChatId, userId: @user.ID, recipientId: @recipient.ID },
+                    data: { lastChatId: lastChatId, userId: @user.ID, channelId: @recipient.ID },
                     success: function (result) {
                         if (result["newMsg"] == true) {
                             handleNewMessages(result);
@@ -146,12 +152,14 @@
                 });
             }
 
-        }, 2000);
+        }, 100);
     });
 
     function handleNewMessages(result) {
         $(".chats").append(result.messages);
         lastChatId = result.lastChatId;
+        var element = document.getElementById("chat");
+        $(".chats")[0].scrollTo(0, element.offsetHeight);
     }
 
     function keepRunning(recipient, interval) {

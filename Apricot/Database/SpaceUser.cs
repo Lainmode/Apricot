@@ -12,6 +12,8 @@ namespace Apricot.Database
         public virtual Space Space { get; set; }
         public virtual User User { get; set; }
 
+        public bool InRoom { get; set; }
+
 
     }
 }

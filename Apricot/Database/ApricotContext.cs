@@ -23,5 +23,7 @@ namespace Apricot.Database
         public DbSet<SpaceUser> SpaceUsers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Chat> Chats { get; set; }
+        public DbSet<TextChannel> TextChannels { get; set; }
+
     }
 }

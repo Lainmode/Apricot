@@ -18,6 +18,7 @@ namespace Apricot.Database
         public Activity Activity { get; set; }
         public virtual ICollection<Contact>? Contacts { get; set; }
         public virtual ICollection<SpaceUser>? SpaceUsers { get; set; }
+        public virtual ICollection<TextChannel>? Channels { get; set; }
     }
 
 
