@@ -3,7 +3,17 @@
 
 <div class="card card-body bg-dark border border-light mb-4">
     <div class="me-4 ms-4 text-center row align-items-center">
-        <div class="col-2 d-flex align-items-center justify-content-center circle-medium bg-success"></div>
+        <div class="col-2">
+
+        @if(@Model.Picture != null) {
+        <img class="d-flex align-items-center jusitfy-content-center rounded-circle  " src="~/Content/Pictures/Users/@Model.Picture" height="80" width="80" />
+
+        }
+        else {
+        <div class="d-flex align-items-center justify-content-center circle-medium bg-success"></div>
+        }
+        </div>
+
         <div class="col-10 text-start align-items-center">
             <h6 class="mb-2">@Model.Nickname</h6>
             <p class="mb-0 mt-0 pb-0 pt-0">@Model.Activity <span class="text-primary">The Boys</span> in <span class="text-primary">The Coffin</span></p>

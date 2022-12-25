@@ -85,7 +85,14 @@
                     <hr />
                     <div class="card card-body bg-dark border border-light">
                         <div class="me-4 ms-4 text-center">
-                            <div class="me-auto ms-auto mb-4 d-flex align-items-center justify-content-center circle-big bg-primary"></div>
+                            @if(Model.Picture != null) {
+                                <img class="rounded-circle me-auto ms-auto mb-4 " src="~/Content/Pictures/Users/@Model.Picture" height="100" width="100" />
+
+                            }
+
+                            else {
+                                <div class="me-auto ms-auto mb-4 d-flex align-items-center justify-content-center circle-big bg-primary"></div>
+                            }
                             <h5 >@Model.Nickname#@Model.Tag</h5>
                             <h6 class="mb-5" style="font-weight: normal">@Model.Email</h6>
                             <button class="btn btn-outline-primary mb-2 d-block w-100">Modify</button>

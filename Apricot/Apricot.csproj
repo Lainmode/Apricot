@@ -26,4 +26,9 @@
     <PackageReference Include="System.Web.Helpers.Crypto" Version="3.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Content\Pictures\Spaces\" />
+    <Folder Include="wwwroot\Content\Pictures\Users\" />
+  </ItemGroup>
+
 </Project>

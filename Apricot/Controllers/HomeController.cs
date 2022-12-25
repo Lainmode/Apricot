@@ -86,6 +86,7 @@ namespace Apricot.Controllers
             ViewBag.User = user;
             ViewBag.Recipient = recipients;
             ViewBag.Channel = channel;
+            ViewBag.Dm = channel.ChannelType == ChannelType.GroupChannel ? false : true;
 
             return View();
         }
@@ -103,7 +104,6 @@ namespace Apricot.Controllers
             };
 
             channel.Chats.Add(chat);
-
             db.Chats.Add(chat);
             db.TextChannels.Update(channel);
             db.SaveChanges();
@@ -137,7 +137,8 @@ namespace Apricot.Controllers
                 return Json(new { newMsg = false });
             }
 
-
+            ViewBag.Dm = channel.ChannelType == ChannelType.GroupChannel ? false : true;
+            ViewBag.Channel = channel;
 
             ChatToken chatToken = new ChatToken()
             {

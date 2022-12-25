@@ -1,11 +1,27 @@
 ﻿@model Apricot.Database.Space
 
 <div class="d-flex align-items-center text-light mb-2 pt-2" id="space" onclick="window.location.href = '@Url.Action("Space", "Home", new {spaceId = Model.ID, userId = ViewBag.ID})'" style="cursor: pointer">
-    <div class="ms-4 me-2 mb-2 d-flex align-items-center justify-content-center bg-secondary circle">
-        @if(Model.VideoStatus == Apricot.Database.VideoStatus.Playing) {
-            <div class="mt-4 bg-primary rounded pe-3 ps-3" style="font-size:16px; margin-top:2rem !important;">Live</div>
-        }
-    </div>
+    
+    @if(Model.Picture != null) {
+        <div class="ms-4 me-2 mb-2 d-flex align-items-center justify-content-center bg-secondary circle" style="background-image: url('../Content/Pictures/Spaces/@Model.Picture'); background-size: contain">
+            @if (Model.VideoStatus == Apricot.Database.VideoStatus.Playing)
+            {
+                <div class="mt-4 bg-primary rounded pe-3 ps-3" style="font-size:16px; margin-top:2rem !important;">Live</div>
+            }
+        </div>
+
+    }
+
+    else {
+        <div class="ms-4 me-2 mb-2 d-flex align-items-center justify-content-center bg-secondary circle">
+            @if (Model.VideoStatus == Apricot.Database.VideoStatus.Playing)
+            {
+                <div class="mt-4 bg-primary rounded pe-3 ps-3" style="font-size:16px; margin-top:2rem !important;">Live</div>
+            }
+        </div>
+    }
+    
+
     <h6>@Model.Name</h6>
 </div>
 

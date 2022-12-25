@@ -1,23 +1,44 @@
 ﻿@model Apricot.Controllers.ChatToken;
-
+    
 @{
+    Apricot.Database.TextChannel channel = ViewBag.Channel;
     Layout = null;
 }
 @foreach(var item in Model.Chats) {
-    <div class="d-flex align-items-center mb-3">
-        @if (item.UserID == Model.User.ID)
+    @if (ViewBag.Dm)
     {
-                    <div class="circle bg-primary me-4 d-flex">
+        <div class="d-flex align-items-center mb-3">
+            @if (item.UserID == Model.User.ID)
+        {
+                        <div class="circle bg-primary me-4 d-flex">
+                        </div>
+            <h6 class="mb-0 bg-primary p-2 pe-3 ps-2 rounded">@item.Text</h6>
+
+        }
+
+        else
+        {
+            <div class="circle  me-4 d-flex">
                     </div>
-        <h6 class="mb-0 bg-primary p-2 pe-3 ps-2 rounded">@item.Text</h6>
-
-    }
-
-    else
-    {
-        <div class="circle  me-4 d-flex">
-                </div>
-        <h6 class="mb-0 bg-dark border-secondary border p-2 pe-3 ps-2 rounded">@item.Text</h6>
-    }
+            <h6 class="mb-0 bg-dark border-secondary border p-2 pe-3 ps-2 rounded">@item.Text</h6>
+        }
         </div>
+    }
+
+    else {
+                                <div class="d-flex mb-3 text-light">
+
+        @if (item.UserID == Model.User.ID)
+        {
+            <p class="mb-0 text-primary">@channel.Users.Where(e=>e.ID == item.UserID).First().Nickname : <span class="text-light" style="font-weight: normal">@item.Text</span></p>
+
+        }
+
+        else
+        {
+            <p class="mb-0 text-info">@channel.Users.Where(e=>e.ID == item.UserID).First().Nickname : <span class="text-light" style="font-weight: normal">@item.Text</span></p>
+
+        }
+        </div>
+    }
 }

@@ -42,22 +42,39 @@
     <div class="chats overflow-auto scroller" style="height:95%">
     @foreach(var chat in chats) 
     {
-        <div class="d-flex align-items-center mb-3">
-        @if(chat.UserID == user.ID) 
-        {
-            <div class="circle bg-primary me-4 d-flex">
-            </div>
-            <h6 class="mb-0 bg-primary p-2 pe-3 ps-2 rounded">@chat.Text</h6>
+        @if(ViewBag.Dm) {
+                <div class="d-flex align-items-center mb-3">
+                    @if (chat.UserID == user.ID)
+                    {
+                        <div class="circle bg-primary me-4 d-flex">
+                        </div>
+                        <h6 class="mb-0 bg-primary p-2 pe-3 ps-2 rounded">@chat.Text</h6>
 
-        }
+                    }
 
-        else 
-        {
-            <div class="circle  me-4 d-flex">
-                    </div>
-                <h6 class="mb-0 bg-dark border-secondary border p-2 pe-3 ps-2 rounded">@chat.Text</h6>
+                    else
+                    {
+                        <div class="circle  me-4 d-flex">
+                        </div>
+                        <h6 class="mb-0 bg-dark border-secondary border p-2 pe-3 ps-2 rounded">@chat.Text</h6>
+                    }
+                </div>
         }
-        </div>
+        else {
+                <div class="d-flex mb-3 text-light">
+                    @if (chat.UserID == user.ID)
+                    {
+                        <p class="mb-0 text-primary">@channel.Users.Where(e=>e.ID == chat.UserID).First().Nickname : <span class="text-light" style="font-weight: normal">@chat.Text</span></p>
+
+                    }
+
+                    else
+                    {
+                        <p class="mb-0 text-info">@channel.Users.Where(e=>e.ID == chat.UserID).First().Nickname : <span class="text-light" style="font-weight: normal">@chat.Text</span></p>
+
+                    }
+                </div>
+        }
     }
     </div>
 </div>

@@ -9,7 +9,7 @@
 <div class="me-auto border border-4 @border mb-2 ms-auto d-flex align-items-center justify-content-center circle" id="contact" onclick="showChat(@Model.ID)">
     @if (recipient.Picture != null)
     {
-        <img src="@Model." height="53" width="53" style="--color_fill: #000" />
+        <img class="rounded-circle" src="~/Content/Pictures/Users/@recipient.Picture" height="53" width="53" style="--color_fill: #000" />
     }
 </div>
 

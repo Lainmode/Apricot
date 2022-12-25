@@ -4,8 +4,8 @@
     Layout = "~/Views/Shared/_LayoutAlt.cshtml";
     Apricot.Database.Space Space = ViewBag.Space;
     TextChannel channel = ViewBag.Channel;
-    int lastChatId = channel.Chats.Count > 0 ? channel.Chats.Last().ID : 0;
-    int channelId = channel.ID;
+    int lastChatId2 = channel.Chats.Count > 0 ? channel.Chats.Last().ID : 0;
+    int channelId2 = channel.ID;
     int userId = ViewBag.ID;
     var sign = (Space.VideoUrl.Contains("?")) ? "&" : "?";
     var url = Space.VideoUrl + sign + "autoplay=1&start=35";
@@ -71,7 +71,7 @@
             <img src="~/Content/round.svg" height="60" width="60" style="--color_fill: #000" />
         </div>
         <hr class="m-2" />
-        <div class="me-auto ms-auto d-flex align-items-center justify-content-center circle bg-secondary" style="cursor: pointer;" onclick="window.location.reload()">
+        <div class="me-auto ms-auto d-flex align-items-center justify-content-center circle bg-secondary" style="cursor: pointer;background-image: url('../Content/Pictures/Spaces/@ViewBag.Space.Picture'); background-size: contain" onclick="window.location.reload()">
             @if (Space.VideoStatus == Apricot.Database.VideoStatus.Playing)
             {
                 <div class="mt-4 bg-primary rounded pe-3 ps-3" style="font-size:16px; margin-top:2rem !important;">Live</div>
@@ -274,7 +274,7 @@
          var videoId = url.split("&")[0];
          if(url.includes("list")) {
              var listId = url.split("list=")[1].split("&")[0];
-             url = videoId + "?" listId;
+             url = videoId + "?" + listId;
          }
 
          else {
@@ -283,7 +283,7 @@
         return 
     }
 
-    var lastChatId = @lastChatId;
+    var lastChatId2 = @lastChatId2;
 
     function addChat2() {
         var msg = $('#message2').val();
@@ -333,7 +333,7 @@
                 $.ajax({
                     method: "post",
                     url: "CheckNewMessages",
-                    data: { lastChatId: lastChatId, userId: @userId, channelId: @channelId },
+                    data: { lastChatId: lastChatId2, userId: @userId, channelId: @channelId2 },
                     success: function (result) {
                         if (result["newMsg"] == true) {
                             handleNewMessages2(result);
@@ -358,7 +358,7 @@
 
     function handleNewMessages2(result) {
         $(".chats2").append(result.messages);
-        lastChatId = result.lastChatId;
+        lastChatId2 = result.lastChatId;
         var element = document.getElementById("chat2");
         $(".chats2")[0].scrollTo(0, element.offsetHeight);
     }
