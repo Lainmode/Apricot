@@ -47,9 +47,9 @@ namespace Apricot.Controllers
 
         public IActionResult Main(int userId)
         {
-            userId = 1;
+            //userId = 1;
             User user = db.Users.Where(e => e.ID == userId).Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).ThenInclude(e=>e.TextChannel).First();
-            ICollection<User> contacts = db.Users.Where(e => e.Contacts.Where(e => e.UserID == user.ID).Count() > 0).ToList();
+            ICollection<User> contacts = db.Users.Where(e => e.Contacts.Where(e => e.UserID == user.ID).Count() > 0).Include(e=>e.SpaceUsers).ThenInclude(e=>e.Space).ToList();
             ICollection<Space> spaces = new List<Space>();
 
             ICollection<TextChannel> channels = db.TextChannels.Where(e=>e.Users.Contains(user) && e.ChannelType == ChannelType.PrivateChannel).Include("Users").ToList();
@@ -139,6 +139,7 @@ namespace Apricot.Controllers
 
             ViewBag.Dm = channel.ChannelType == ChannelType.GroupChannel ? false : true;
             ViewBag.Channel = channel;
+            ViewBag.Recipients = channel.Users.Where(e => e.ID != userId).ToList();
 
             ChatToken chatToken = new ChatToken()
             {
@@ -154,7 +155,7 @@ namespace Apricot.Controllers
         public IActionResult Space(int spaceId, int userId)
         {
             User user = db.Users.Where(e => e.ID == userId).Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).First(); ;
-            Space space = db.Spaces.Where(e => e.ID == spaceId).Include(e=>e.TextChannel).ThenInclude(e => e.Chats).Include(e=>e.TextChannel.Users).FirstOrDefault();
+            Space space = db.Spaces.Where(e => e.ID == spaceId).Include(e => e.SpaceUsers).Include(e=>e.TextChannel).ThenInclude(e => e.Chats).Include(e=>e.TextChannel.Users).FirstOrDefault();
 
             ICollection<User> contacts = db.Users.Where(e => e.Contacts.Where(e => e.UserID == user.ID).Count() > 0).ToList();
             ICollection<Space> spaces = new List<Space>();

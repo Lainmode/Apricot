@@ -14,6 +14,7 @@ namespace Apricot.Database
         public string? VideoUrl { get; set; }
 
         public string? Picture { get; set; }
+        public string? Background { get; set; }
 
         public int TextChannelID { get; set; }
         public virtual TextChannel TextChannel { get; set; }

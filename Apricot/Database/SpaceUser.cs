@@ -13,7 +13,7 @@ namespace Apricot.Database
         public virtual User User { get; set; }
 
         public bool InRoom { get; set; }
-
+        public bool IsAdmin { get; set; }
 
     }
 }

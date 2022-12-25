@@ -2,6 +2,7 @@
     
 @{
     Apricot.Database.TextChannel channel = ViewBag.Channel;
+    var recipients = (ICollection<Apricot.Database.User>)ViewBag.Recipients;
     Layout = null;
 }
 @foreach(var item in Model.Chats) {
@@ -10,17 +11,17 @@
         <div class="d-flex align-items-center mb-3">
             @if (item.UserID == Model.User.ID)
         {
-                        <div class="circle bg-primary me-4 d-flex">
+                <div class="circle bg-primary me-4 d-flex" style="background-image: url('../Content/Pictures/Users/@Model.User.Picture'); background-size: cover">
                         </div>
-            <h6 class="mb-0 bg-primary p-2 pe-3 ps-2 rounded">@item.Text</h6>
+                <h6 class="mb-0 bg-primary p-2 pe-3 ps-2 rounded" style="overflow-wrap: anywhere">@item.Text</h6>
 
         }
 
         else
         {
-            <div class="circle  me-4 d-flex">
+                <div class="circle  me-4 d-flex" style="background-image: url('../Content/Pictures/Users/@recipients.Where(e=>e.ID != Model.User.ID).FirstOrDefault().Picture'); background-size: cover">
                     </div>
-            <h6 class="mb-0 bg-dark border-secondary border p-2 pe-3 ps-2 rounded">@item.Text</h6>
+                <h6 class="mb-0 bg-dark border-secondary border p-2 pe-3 ps-2 rounded" style="overflow-wrap: anywhere">@item.Text</h6>
         }
         </div>
     }
