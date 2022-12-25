@@ -57,7 +57,7 @@
                     {
                         <div class="circle  me-4 d-flex" style="background-image: url('../Content/Pictures/Users/@recipient.Picture'); background-size: cover">
                         </div>
-                        <h6 class="mb-0 bg-dark border-secondary border p-2 pe-3 ps-2 rounded">@chat.Text</h6>
+                            <h6 class="mb-0 bg-dark border-secondary border p-2 pe-3 ps-2 rounded" style="overflow-wrap: anywhere">@chat.Text</h6>
                     }
                 </div>
         }
@@ -92,6 +92,9 @@
 
 </div>
 </div>
+
+<audio id="newMessage" src="~/Content/Audio/NewMessage.mp3"></audio>
+
 
 
 <script>
@@ -176,6 +179,9 @@
 
     function handleNewMessages(result) {
         $(".chats").append(result.messages);
+        if(result.hasRecipient) {
+            $("#newMessage")[0].play();
+        }
         lastChatId = result.lastChatId;
         var element = document.getElementById("chat");
         $(".chats")[0].scrollTo(0, element.offsetHeight);

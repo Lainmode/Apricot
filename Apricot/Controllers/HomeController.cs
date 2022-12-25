@@ -149,7 +149,7 @@ namespace Apricot.Controllers
 
             var partialViewHtml = Common.RenderViewAsync<ChatToken>(this, "ChatBubble", chatToken, true).Result;
 
-            return Json(new { newMsg = true, messages = partialViewHtml, lastChatId = allChats.Last().ID }); ;
+            return Json(new { newMsg = true, hasRecipient = (allChats.Where(e => e.UserID != user.ID).Count() > 0), messages = partialViewHtml, lastChatId = allChats.Last().ID }) ; ;
         }
 
         public IActionResult Space(int spaceId, int userId)

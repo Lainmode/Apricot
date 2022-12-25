@@ -282,6 +282,7 @@
     </div>
 </div>
 
+<audio id="newGroupMessage" src="~/Content/Audio/NewGroupMessage.mp3"></audio>
 
 
 <style>
@@ -395,6 +396,9 @@
 
     function handleNewMessages2(result) {
         $(".chats2").append(result.messages);
+        if(result.hasRecipient) {
+            $("#newGroupMessage")[0].play();
+        }
         lastChatId2 = result.lastChatId;
         var element = document.getElementById("chat2");
         $(".chats2")[0].scrollTo(0, element.offsetHeight);

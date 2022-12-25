@@ -58,6 +58,7 @@
     }
 </style>
 
+
 <div class="d-flex h-100 overflow-hidden" style="background-color:#1B1C1F">
     <div class="d-flex flex-column bg-dark pb-2 text-light pt-3 justify-content-center" style="width: 4.5rem;">
         <div class="d-flex justify-content-center logo" onclick="window.location.reload()">
@@ -95,8 +96,8 @@
                             }
                             <h5 >@Model.Nickname#@Model.Tag</h5>
                             <h6 class="mb-5" style="font-weight: normal">@Model.Email</h6>
-                            <button class="btn btn-outline-primary mb-2 d-block w-100">Modify</button>
-                            <a class="text-primary text-decoration-none" href="#">Reset Password</a>
+                            <button class="btn btn-outline-primary mb-2 d-block w-100" data-bs-toggle="modal" data-bs-target="#ModifyModal">Modify</button>
+                            <a class="text-primary text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#ResetPasswordModal">Reset Password</a>
                         </div>
                     </div>
                 </div>
@@ -183,6 +184,56 @@
                 <form onsubmit="return false;">
                     <input class="form-control bg-dark mb-3 text-light" placeholder="Enter name and tag [Example#1234]" />
                     <button class="btn btn-primary w-100 d-block   text-light" data-bs-dismiss="modal">Send</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModifyModal" tabindex="-1" aria-labelledby="ModifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content bg-dark text-primary">
+            <div class="modal-header text-center border-bottom-0">
+                <h5 class="modal-title text-center" id="ModifyModalLabel">Modify Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="return false;">
+                    <div class="input-group">
+                        <input class="form-control bg-dark mb-3 text-light w-75" placeholder="Nickname" value="@Model.Nickname" />
+                        <input class="form-control bg-dark mb-3 text-secondary w-25 text-center" placeholder="Tag" value="#@Model.Tag" disabled />
+
+                    </div>
+                    <input class="form-control bg-dark mb-3 text-light" placeholder="Email Address" value="@Model.Email" />
+                    <input class="form-control bg-dark mb-3 text-light" placeholder="Phone Number" />
+                    <input class="form-control bg-dark mb-3 text-light" placeholder="Status Message" />
+
+                    <button class="btn btn-outline-light mb-4 w-100 d-block">Change Profile Picture</button>
+
+
+                    <button class="btn btn-primary w-100 d-block text-light" data-bs-dismiss="modal">Submit</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ResetPasswordModal" tabindex="-1" aria-labelledby="ResetPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content bg-dark text-primary">
+            <div class="modal-header text-center border-bottom-0">
+                <h5 class="modal-title text-center" id="ResetPasswordModalLabel">Reset Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="return false;">
+                    <input class="form-control bg-dark mb-3 text-light" placeholder="Old Password" />
+                    <input type="password" class="form-control bg-dark mb-3 text-light" placeholder="New Password" />
+                    <input type="password" class="form-control bg-dark mb-3 text-light" placeholder="Repeat New Password" />
+
+                    <button class="btn btn-primary w-100 d-block text-light" data-bs-dismiss="modal">Submit</button>
                 </form>
             </div>
 
