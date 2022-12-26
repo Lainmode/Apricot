@@ -31,13 +31,13 @@
 
         @if (item.UserID == Model.User.ID)
         {
-            <p class="mb-0 text-primary">@channel.Users.Where(e=>e.ID == item.UserID).First().Nickname : <span class="text-light" style="font-weight: normal">@item.Text</span></p>
+                <p class="mb-0 text-primary" style="overflow-wrap: anywhere">@channel.Users.Where(e=>e.ID == item.UserID).First().Nickname : <span class="text-light" style="font-weight: normal">@item.Text</span></p>
 
         }
 
         else
         {
-            <p class="mb-0 text-info">@channel.Users.Where(e=>e.ID == item.UserID).First().Nickname : <span class="text-light" style="font-weight: normal">@item.Text</span></p>
+                <p class="mb-0 text-info" style="overflow-wrap: anywhere">@channel.Users.Where(e=>e.ID == item.UserID).First().Nickname : <span class="text-light" style="font-weight: normal">@item.Text</span></p>
 
         }
         </div>

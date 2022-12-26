@@ -97,6 +97,7 @@
 
 
 
+
 <script>
     var lastChatId = @lastChatId;
    
@@ -117,6 +118,11 @@
             clearInterval(interval);
         }
     });
+
+    function updateScroll() {
+        var element = $(".chats")[0];
+        element.scrollTop = element.scrollHeight;
+    }
 
     function addChat() {
         var msg = $('#message').val();
@@ -150,7 +156,8 @@
 
     $(document).ready(function () {
         var element = document.getElementById("chat");
-        $(".chats")[0].scrollTo(0, element.offsetHeight);
+        updateScroll();
+
         var rid = recipientId;
         var done = true;
         sleep(2000);
@@ -182,6 +189,7 @@
         if(result.hasRecipient) {
             $("#newMessage")[0].play();
         }
+        updateScroll();
         lastChatId = result.lastChatId;
         var element = document.getElementById("chat");
         $(".chats")[0].scrollTo(0, element.offsetHeight);
