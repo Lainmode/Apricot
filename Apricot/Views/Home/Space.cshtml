@@ -164,7 +164,7 @@
 
 
                         @if(Model.SpaceUsers.Where(e=>e.SpaceID == Space.ID).FirstOrDefault().IsAdmin) {
-                            <button class="btn btn-secondary float-end ms-auto m-2">Cogwheel Settings</button>
+                            <button class="btn btn-secondary float-end ms-auto m-2" data-bs-toggle="modal" data-bs-target="#spaceSettingsModal">Cogwheel Settings</button>
                         }
 
                     </div>
@@ -276,6 +276,30 @@
                 <form onsubmit="return false;" >
                     <input class="form-control bg-dark mb-3 text-light" placeholder="Enter name and tag [Example#1234]"/>
                     <button class="btn btn-primary w-100 d-block   text-light" data-bs-dismiss="modal">Send</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="spaceSettingsModal" tabindex="-1" aria-labelledby="spaceSettingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content bg-dark text-primary">
+            <div class="modal-header text-center border-bottom-0">
+                <h5 class="modal-title text-center" id="spaceSettingsModalLabel">Space Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="return false;">
+                    <input class="form-control bg-dark mb-3 text-light" placeholder="Name" value="@Space.Name" />
+                    <textarea class="form-control bg-dark mb-3 text-light" placeholder="Description"  rows="6">@Space.Description</textarea>
+                    <div class="d-flex justify-content-center">
+                            <button class="btn btn-light me-1 ms-1 mb-4 w-50 d-block">Change Background Image</button>
+                        <button class="btn btn-light me-1 ms-1 mb-4 w-50 d-block">Change Avatar Image</button>
+
+                    </div>
+                    <button class="btn btn-primary w-100 d-block   text-light" data-bs-dismiss="modal">Submit</button>
                 </form>
             </div>
 

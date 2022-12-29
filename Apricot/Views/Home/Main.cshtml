@@ -149,7 +149,9 @@
                 <div class="col-4 h-50">
                     <div class="card m-1 ">
                         <div class="card-body bg-black rounded text-center  border-secondary">
-                            <h5>Create a new Space</h5>
+                            <h5 class="mb-4">Create a new Space</h5>
+                            <p class="text-light">Create and customize a space for you and your colleagues</p>
+                            <button class="btn btn-primary w-100 d-block text-light">Create Space</button>
                         </div>
                     </div>
 
@@ -157,14 +159,23 @@
                 <div class="col-4 h-50">
                     <div class="card m-1 ">
                         <div class="card-body bg-black rounded text-center  border-secondary">
-                            <h5>Join A Random Space</h5>
+                            <h5 class="mb-4">Join A Random Space</h5>
+                            <p class="text-light mb-4">Our system will match you with a space which matches your interests</p>
+                            <button class="btn btn-primary mb-3 w-100 d-block text-light">Match Me</button>
+
+                            <p>Or...</p>
+                            <button class="btn btn-outline-primary w-100 d-block text-light">Browse Spaces</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-4 h-50">
                     <div class="card m-1 ">
                         <div class="card-body bg-black rounded text-center  border-secondary">
-                            <h5>Join A Private Space</h5>
+                            <h5 class="mb-4">Join A Private Space</h5>
+                            <p class="text-light mb-4">Do you have an invitation code?</p>
+                            <input class="form-control w-100 bg-dark text-light mb-4" placeholder="Invitation Code"/>
+                            <button class="btn btn-primary w-100 d-block text-light">Submit</button>
+
                         </div>
                     </div>
                 </div>
@@ -241,8 +252,13 @@
         </div>
     </div>
 </div>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-
-<script>
-
+@section scripts {<script>
+    $(document).ready(function () {
+        $('#Topics').select2();
+    });
 </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+}
