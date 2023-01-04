@@ -122,8 +122,8 @@
                     </div>
                     </form>
 
-                    <div class=" d-flex bg-dark align-items-center bg-opacity-75" style="min-height: 80%;">
-                        <iframe style="width: 100%; resize:both" class="p-2" height="800" src="@url"  title="Debussy Arabesque No.1 - Paul Barton FEURICH 218 piano" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class=" d-flex bg-dark align-items-center bg-opacity-75" id="video" style="min-height: 80%;">
+                        <iframe style="width: 100%; resize:both;" class="p-2"  src="@url"  title="Debussy Arabesque No.1 - Paul Barton FEURICH 218 piano" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                         <div class="d-flex p-3 w-100 bg-black bg-opacity-75 rounded-bottom">
                             <button class="btn btn-success me-2">Window</button>
@@ -321,7 +321,9 @@
 
 
         <script>
-
+            $(document).resize(function() {
+                $("iframe")[0].style.height = $("#video")[0].offsetHeight;
+            });
 
     function changeUrl() {
         var url = $("#urlInput").val();
@@ -383,6 +385,7 @@
         }
 
     $(document).ready(function () {
+                $("iframe")[0].style.height = $("#video")[0].offsetHeight;
         checkNewMsgs();
     });
 

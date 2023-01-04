@@ -72,7 +72,7 @@
         }
         <a class="float-end me-auto mt-2 mb-2 btn btn-success  text-light ms-auto d-flex align-items-center justify-content-center circle bg-success  text-decoration-none" style="font-size:14px;" href="@Url.Action("Index")" data-bs-toggle="modal" data-bs-target="#newFriendModal">+</a>
 
-        <div class="float-end mt-auto me-auto ms-auto d-flex align-items-center justify-content-center circle bg-secondary">?</div>
+        <a class="float-end mt-auto me-auto ms-auto d-flex align-items-center justify-content-center circle bg-secondary text-light text-decoration-none" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#HelpModal">?</a>
         <a class="float-end me-auto mt-2 btn btn-outline-danger  text-light ms-auto d-flex align-items-center justify-content-center circle bg-transparent text-decoration-none" style="font-size:14px;" href="@Url.Action("Index")">Logout</a>
 
     </div>
@@ -203,6 +203,21 @@
     </div>
 </div>
 
+<div class="modal fade" id="HelpModal" tabindex="-1" aria-labelledby="HelpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content bg-dark text-primary">
+            <div class="modal-header text-center border-bottom-0">
+                <h5 class="modal-title text-center" id="HelpModalLabel">Help</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body mb-4">
+                How may we help?
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="ModifyModal" tabindex="-1" aria-labelledby="ModifyModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md modal-dialog-centered">
         <div class="modal-content bg-dark text-primary">
@@ -287,7 +302,7 @@
                             Users may join using the Match functionality
                         </label>
 
-</div>
+                    </div>
                     </div>
 
                     <button class="btn btn-primary w-100 d-block text-light" data-bs-dismiss="modal">Submit</button>
