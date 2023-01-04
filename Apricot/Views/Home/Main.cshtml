@@ -142,7 +142,7 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark text-primary">
             <div class="modal-header text-center border-bottom-0">
-                <h5 class="modal-title text-center" id="newRoomModalLabel">New Room</h5>
+                <h5 class="modal-title text-center" id="newRoomModalLabel">New Space</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body row">
@@ -151,7 +151,7 @@
                         <div class="card-body bg-black rounded text-center  border-secondary">
                             <h5 class="mb-4">Create a new Space</h5>
                             <p class="text-light">Create and customize a space for you and your colleagues</p>
-                            <button class="btn btn-primary w-100 d-block text-light">Create Space</button>
+                            <button class="btn btn-primary w-100 d-block text-light" onclick="$('#newRoomModal').modal('toggle'); $('#CreateSpaceModal').modal('toggle');">Create Space</button>
                         </div>
                     </div>
 
@@ -244,6 +244,51 @@
                     <input class="form-control bg-dark mb-3 text-light" placeholder="Old Password" />
                     <input type="password" class="form-control bg-dark mb-3 text-light" placeholder="New Password" />
                     <input type="password" class="form-control bg-dark mb-3 text-light" placeholder="Repeat New Password" />
+
+                    <button class="btn btn-primary w-100 d-block text-light" data-bs-dismiss="modal">Submit</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CreateSpaceModal" tabindex="-1" aria-labelledby="CreateSpaceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content bg-dark text-primary">
+            <div class="modal-header text-center border-bottom-0">
+                <h5 class="modal-title text-center" id="CreateSpaceModalLabel">Create Space</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="return false;">
+                    <input type="text" class="form-control bg-dark mb-3 text-light" placeholder="Space Name" />
+                    <textarea class="form-control mb-3  bg-dark text-light" rows="5" placeholder="Description"></textarea>
+                    <div class="d-flex justify-content-center mb-3">
+                        <button class="btn btn-secondary me-1 w-50">Upload Avatar</button>
+                        <button class="btn btn-secondary ms-1 w-50">Upload Thumbnail</button>
+                    </div>
+                    <div class="m-3 ms-1">
+                    <div>
+                                            <input class="form-check-input" type="checkbox" value="" id="private">
+                    <label class="form-check-label" for="private">
+                        Private Space
+                    </label>
+                    </div>
+                    <div>
+                                            <input class="form-check-input" type="checkbox" value="" id="unlisted">
+                    <label class="form-check-label" for="unlisted">
+                        Unlisted Space
+                    </label>
+                    </div>
+                    <div>
+                        <input class="form-check-input" type="checkbox" value="" id="random">
+                        <label class="form-check-label" for="random">
+                            Users may join using the Match functionality
+                        </label>
+
+</div>
+                    </div>
 
                     <button class="btn btn-primary w-100 d-block text-light" data-bs-dismiss="modal">Submit</button>
                 </form>

@@ -19,8 +19,24 @@ namespace Apricot.Controllers
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             db.ChangeTracker.LazyLoadingEnabled = false;
+            Visit visit = new Visit()
+            {
+                IPAddress = context.HttpContext.Connection.RemoteIpAddress.ToString(),
+                Protocol = context.HttpContext.Request.Protocol,
+                Route = context.HttpContext.Request.Path.Value,
+                TimeStamp = DateTime.Now,
+                Method = context.HttpContext.Request.Method,
+            };
+            if (visit.Route != "/Home/CheckNewMessages")
+            {
+                db.Visits.Add(visit);
+                db.SaveChanges();
+            }
+
+
             base.OnActionExecuting(context);
         }
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -48,11 +64,11 @@ namespace Apricot.Controllers
         public IActionResult Main(int userId)
         {
             //userId = 1;
-            User user = db.Users.Where(e => e.ID == userId).Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).ThenInclude(e=>e.TextChannel).First();
-            ICollection<User> contacts = db.Users.Where(e => e.Contacts.Where(e => e.UserID == user.ID).Count() > 0).Include(e=>e.SpaceUsers).ThenInclude(e=>e.Space).ToList();
+            User user = db.Users.Where(e => e.ID == userId).Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).ThenInclude(e => e.TextChannel).First();
+            ICollection<User> contacts = db.Users.Where(e => e.Contacts.Where(e => e.UserID == user.ID).Count() > 0).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).ToList();
             ICollection<Space> spaces = new List<Space>();
 
-            ICollection<TextChannel> channels = db.TextChannels.Where(e=>e.Users.Contains(user) && e.ChannelType == ChannelType.PrivateChannel).Include("Users").ToList();
+            ICollection<TextChannel> channels = db.TextChannels.Where(e => e.Users.Contains(user) && e.ChannelType == ChannelType.PrivateChannel).Include("Users").ToList();
             foreach (var item in user.SpaceUsers)
             {
                 spaces.Add(item.Space);
@@ -149,13 +165,13 @@ namespace Apricot.Controllers
 
             var partialViewHtml = Common.RenderViewAsync<ChatToken>(this, "ChatBubble", chatToken, true).Result;
 
-            return Json(new { newMsg = true, hasRecipient = (allChats.Where(e => e.UserID != user.ID).Count() > 0), messages = partialViewHtml, lastChatId = allChats.Last().ID }) ; ;
+            return Json(new { newMsg = true, hasRecipient = (allChats.Where(e => e.UserID != user.ID).Count() > 0), messages = partialViewHtml, lastChatId = allChats.Last().ID }); ;
         }
 
         public IActionResult Space(int spaceId, int userId)
         {
             User user = db.Users.Where(e => e.ID == userId).Include(e => e.Contacts).Include(e => e.SpaceUsers).ThenInclude(e => e.Space).First(); ;
-            Space space = db.Spaces.Where(e => e.ID == spaceId).Include(e => e.SpaceUsers).Include(e=>e.TextChannel).ThenInclude(e => e.Chats).Include(e=>e.TextChannel.Users).FirstOrDefault();
+            Space space = db.Spaces.Where(e => e.ID == spaceId).Include(e => e.SpaceUsers).Include(e => e.TextChannel).ThenInclude(e => e.Chats).Include(e => e.TextChannel.Users).FirstOrDefault();
 
             ICollection<User> contacts = db.Users.Where(e => e.Contacts.Where(e => e.UserID == user.ID).Count() > 0).ToList();
             ICollection<Space> spaces = new List<Space>();

@@ -4,6 +4,7 @@ using Apricot.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Apricot.Migrations
 {
     [DbContext(typeof(ApricotContext))]
-    partial class ApricotContextModelSnapshot : ModelSnapshot
+    [Migration("20221229123957_added visits")]
+    partial class addedvisits
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -212,9 +215,6 @@ namespace Apricot.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("IPAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Method")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Protocol")
