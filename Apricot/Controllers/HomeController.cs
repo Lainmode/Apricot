@@ -58,6 +58,7 @@ namespace Apricot.Controllers
         public IActionResult Login()
         {
             ViewBag.CurrentPage = CurrentPage.Login;
+            ViewBag.Users = db.Users.ToList();
             return View();
         }
 
@@ -202,7 +203,7 @@ namespace Apricot.Controllers
 
 
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             ViewBag.CurrentPage = CurrentPage.About;
             return View();

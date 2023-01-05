@@ -1,21 +1,45 @@
-﻿@{
-
+﻿@using Apricot.Database
+@{
+    ICollection<User> users = ViewBag.Users;
 }
+
+<style>
+    .loginas {
+        transition: top ease 0.2s;
+        top: 0;
+    }
+    .loginas:hover {
+        top: -2px;
+        color: var(--bs-primary);
+
+    }
+</style>
 
 <div class="container fill d-flex justify-content-center">
     <div class="text-center align-items-center text-light mb-auto mt-auto w-50">
-        <div class="card card-body border-primary border rounded bg-black">
+        <div class="card card-body border-primary border rounded bg-black mb-2">
             <h4 class="text-center text-primary mb-4">Login</h4>
             <form method="post" action="@Url.Action("Main", "Home", new {userId = 1})">
                 <div class="me-4 ms-4">
-                <input class="form-control mb-4" type="text" placeholder="Username" value="homelander" />
+                <input class="form-control mb-4" type="text" placeholder="Username" value="eda" />
                 <input class="form-control mb-5" type="password" placeholder="Password" value="123" />
                 </div>
                 <button class="btn btn-primary w-75 text-light" style="font-size: 1.5rem;">Login</button>
             </form>
         </div>
-
-
+        <div class="row">
+        @foreach(var user in users) {
+            <div class="col-4">
+                <a class="card bg-black border-primary loginas text-decoration-none" style="cursor:pointer" href="@Url.Action("Main", "Home", new {userId=user.ID})">
+                    <div class="card-body">
+                        <p>Login as</p>
+                        <img height="70" width="70" class="rounded-circle mb-1" src="../Content/Pictures/Users/@user.Picture">
+                        <p class="text-primary">@user.Nickname</p>
+                    </div>
+                </a>
+            </div>
+        }
+        </div>
     </div>
 </div>
 <div class="d-flex justify-content-center align-items-center text-secondary">

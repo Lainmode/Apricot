@@ -10,7 +10,7 @@
     var sign = (Space.VideoUrl.Contains("?")) ? "&" : "?";
     int isPlaying = Space.VideoStatus == VideoStatus.Playing ? 1 : 0;
 
-    var url = Space.VideoUrl + sign + "autoplay=" + isPlaying + "&start=35";
+    var url = Space.VideoUrl + sign + "autoplay=" + isPlaying + "&start=250";
 
     string bgdark = Space.Background == null ? "bg-dark" : "bg-opacity-75 bg-dark ";
 
@@ -112,7 +112,7 @@
     </div>
     <div class="row w-100 h-100" id="main">
         <div class="col-9 gutter-0  pe-4 overflow-auto" id="middle">
-            <div class="text-light mt-3 ms-4"><h6><span class="text-primary">Billy Butcher</span> doing whatever</h6></div>
+            <div class="text-light mt-3 ms-4"><h6><span class="text-primary">Can</span> streaming <span class="text-primary">Youtube</span></h6></div>
             <div class="row ms-0 " style="height: 93%">
                 <div class="col-12 text-light h-100">
                     <form class="m-0 p-0" onsubmit="changeUrl(); return false;">
@@ -126,10 +126,7 @@
                         <iframe style="width: 100%; resize:both;" class="p-2"  src="@url"  title="Debussy Arabesque No.1 - Paul Barton FEURICH 218 piano" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                         <div class="d-flex p-3 w-100 bg-black bg-opacity-75 rounded-bottom">
-                            <button class="btn btn-success me-2">Window</button>
-                            <button class="btn btn-danger me-2">Window</button>
-                            <button class="btn btn-warning me-2">Window</button>
-                            <button class="btn btn-info me-2">Window</button>
+                        <button class="btn btn-outline-primary me-2 text-light" data-bs-toggle="modal" data-bs-target="#ActivityModal">Select Activity</button>
                         <button class="btn btn-secondary float-end hideIframe ms-auto" onclick="$('iframe').hide(); $('.showIframe').show(); $('.hideIframe').hide();">Hide</button>
                             <button class="btn btn-secondary float-end showIframe ms-auto" onclick="$('iframe').show(); $('.hideIframe').show(); $('.showIframe').hide();" style="display:none;">Show</button>
 
@@ -143,13 +140,21 @@
                         <div class="d-flex">
                         @foreach(var user in Space.SpaceUsers) {
                             <div class="dropdown">
-                                <button class="btn d-flex ms-2 me-1 align-items-center justify-content-center circle bg-secondary border-0" id="dropdownMenuButton" data-bs-toggle="dropdown" data-toggle="dropdown" style="background-image: url('../Content/Pictures/Users/@user.User.Picture'); background-size: cover;"></button>
+                                <button class="btn d-flex ms-2 me-1 align-items-center justify-content-center circle bg-secondary border-0" id="dropdownMenuButton" data-bs-toggle="dropdown" data-toggle="dropdown" style="background-image: url('../Content/Pictures/Users/@user.User.Picture'); background-size: cover;">
+                                                                    @if (Space.SpaceUsers.Where(e => e.SpaceID == Space.ID && e.UserID == user.UserID).FirstOrDefault().IsAdmin) { 
+                                    
+                                    <p class="bg-primary rounded text-light ps-2 pe-2 mt-5">Admin</p>
+                                    
+                                    }
+                                </button>
+    
+
                                 @if (user.UserID != Model.ID)
                                 {
                                 <div class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item normalAction text-light" href="#">Send Message</a>
                                     <a class="dropdown-item normalAction text-light" href="#">Mute</a>
-                                    @if(Model.SpaceUsers.Where(e=>e.SpaceID == Space.ID).FirstOrDefault().IsAdmin) {
+                                    @if(Model.SpaceUsers.Where(e=>e.SpaceID == Space.ID ).FirstOrDefault().IsAdmin) {
                                             <a class="dropdown-item normalAction text-light" href="#">Promote</a>
                                             <a class="dropdown-item kickban text-danger" href="#">Kick</a>
                                             <a class="dropdown-item kickban text-danger" href="#">Ban</a>
@@ -306,6 +311,33 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="ActivityModal" tabindex="-1" aria-labelledby="ActivityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-dark text-primary">
+            <div class="modal-header text-center border-bottom-0">
+                <h5 class="modal-title text-center" id="ActivityModalLabel">Select Activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body row" style="height: 10rem;">
+                <div class="col-3">
+                    <div class="btn  h-100 w-100 bg-light rounded-5" style="background-image:url('../Content/Pictures/youtube.png'); background-size:contain; background-repeat:no-repeat;background-position: center;"></div>
+                </div>
+                                <div class="col-3">
+                    <div class="btn  h-100 w-100 bg-light rounded-5" style="background-image:url('../Content/Pictures/twitch.png'); background-size:contain; background-repeat:no-repeat;background-position: center;"></div>
+                </div>
+                                <div class="col-3">
+                    <div class="btn h-100 w-100 bg-light  rounded-5" style="background-image:url('../Content/Pictures/webcam.png'); background-size:contain; background-repeat:no-repeat;background-position: center;"></div>
+                </div>
+                <div class="col-3">
+                    <div class="btn h-100 w-100 bg-light rounded-5" style="background-image:url('../Content/Pictures/screen.png'); background-size:contain; background-repeat:no-repeat;background-position: center;"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 <audio id="newGroupMessage" src="~/Content/Audio/NewGroupMessage.mp3"></audio>
 
